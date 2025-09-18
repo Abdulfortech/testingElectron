@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>PharmaLogs - Home</title>
+  <meta http-equiv="Content-Security-Policy" content="
+    default-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com https://code.jquery.com;
+    script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com https://code.jquery.com;
+    img-src 'self' data:;
+    connect-src 'self' https://pharmalogs.abdulfortech.com;
+    ">
+    
+  <!-- Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Font Awesome -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+
+  <!-- Toastr CSS -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet">
+
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">PharmaLogs</a>
+      <div class="ms-auto text-white">
+        Welcome, <span id="navbarUser"></span>
+      </div>
+      <button class="btn btn-danger ms-3" onclick="logout()">Logout</button>
+    </div>
+  </nav>
+
+  <!-- Jumbotron -->
+    <div class="p-5 mb-4 bg-light rounded-3">
+        <div class="container-fluid py-5">
+        <h1 class="display-5 fw-bold" id="businessName"></h1>
+        <p class="col-md-8 fs-4">Welcome to your business dashboard.</p>
+        </div>
+    </div>
+
+    <div class="container mt-4">
+        <div class="row g-3">
+            
+            <!-- Patients -->
+            <div class="col-6 col-md-4 col-lg-3">
+            <div class="card shadow-sm text-center p-3">
+                <div class="card-body">
+                <i class="fas fa-users fa-2x text-primary mb-2"></i>
+                <h5 class="card-title">Patients</h5>
+                <h3 id="patientsCount">0</h3>
+                <a href="patients.html" class="btn btn-sm btn-outline-primary mt-2">View All</a>
+                </div>
+            </div>
+            </div>
+
+            <!-- Orders -->
+            <div class="col-6 col-md-4 col-lg-3">
+                <div class="card shadow-sm text-center p-3">
+                    <div class="card-body">
+                    <i class="fas fa-box fa-2x text-success mb-2"></i>
+                    <h5 class="card-title">Orders</h5>
+                    <h3 id="ordersCount">0</h3>
+                    <a href="orders.html" class="btn btn-sm btn-outline-success mt-2">View All</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Transactions -->
+            <div class="col-6 col-md-4 col-lg-3">
+            <div class="card shadow-sm text-center p-3">
+                <div class="card-body">
+                <i class="fas fa-exchange-alt fa-2x text-warning mb-2"></i>
+                <h5 class="card-title">Transactions</h5>
+                <h3 id="transactionsCount">0</h3>
+                <a href="transactions.html" class="btn btn-sm btn-outline-warning mt-2">View All</a>
+                </div>
+            </div>
+            </div>
+
+            <!-- Today's Transactions -->
+            <div class="col-6 col-md-4 col-lg-3">
+            <div class="card shadow-sm text-center p-3">
+                <div class="card-body">
+                <i class="fas fa-calendar-day fa-2x text-danger mb-2"></i>
+                <h5 class="card-title">Today's Trans..</h5>
+                <h3 id="transactionsTodayCount">0</h3>
+                <a href="todays-transactions.html" class="btn btn-sm btn-outline-danger mt-2">View All</a>
+                </div>
+            </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="container mt-4">
+        <h4>Recent Transactions</h4>
+        <table class="table table-striped mt-3">
+            <thead>
+            <tr>
+                <th>#</th>
+                <th>User</th>
+                <th>Cashier</th>
+                <th>Store</th>
+                <th>Dispensary</th>
+                <th>Order Code</th>
+                <th>Amount</th>
+                <th>Channel</th>
+                <th>Status</th>
+                <th>Date</th>
+            </tr>
+            </thead>
+            <tbody id="transactionsTableBody">
+            <!-- Fetched transactions will appear here -->
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Transaction Details Modal -->
+    <div class="modal fade" id="transactionModal" tabindex="-1" aria-labelledby="transactionModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title" id="transactionModalLabel">Transaction Details</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <ul class="list-group">
+                <li class="list-group-item"><strong>Reference:</strong> <span id="txReference"></span></li>
+                <li class="list-group-item"><strong>Amount:</strong> ₦<span id="txAmount"></span></li>
+                <li class="list-group-item"><strong>Status:</strong> <span id="txStatus"></span></li>
+                <li class="list-group-item"><strong>Date:</strong> <span id="txDate"></span></li>
+                <li class="list-group-item"><strong>Channel:</strong> <span id="txChannel"></span></li>
+                <li class="list-group-item"><strong>Description:</strong> <span id="txDescription"></span></li>
+                </ul>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <!-- <button type="button" class="btn btn-primary" onclick="printTransaction()">Print</button> -->
+            </div>
+        </div>
+    </div>
+    </div>
+
+
+    <!-- jQuery (required by Toastr) -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Toastr JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
+    <script src="auth.js"></script>
+    <script src="home.js"></script>
+</body>
+</html>
